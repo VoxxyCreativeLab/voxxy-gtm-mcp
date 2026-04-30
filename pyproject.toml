@@ -1,0 +1,64 @@
+[project]
+# voxxy-gtm-mcp — greenfield Python MCP server for Google Tag Manager API v2.
+# Per Phase 2.2b sub-2 of ad-platform-campaign-manager v2.0.0; Wave 6 T3 research
+# (research-log.md) recommended greenfield-build over fork due to no upstream
+# candidate combining Python + permissive license + production-quality architecture.
+# Mirrors google-marketing-solutions/google_ads_mcp directory layout for structural
+# consistency across the Voxxy wrapper-plugin family (4 siblings:
+# voxxy-google-ads-mcp, voxxy-meta-ads-mcp, voxxy-bigquery-mcp, voxxy-ga4-mcp).
+name = "voxxy-gtm-mcp"
+description = "Voxxy MCP server for Google Tag Manager API v2 — greenfield Python wrapper with conversion-tag scaffolding extensions (v0.2+)"
+version = "0.1.0"
+# Lower bound 3.10 for the 'mcp' SDK dependency (matches sibling voxxy-ga4-mcp).
+requires-python = ">=3.10"
+license = "Apache-2.0"
+readme = "README.md"
+dependencies = [
+    "google-api-python-client>=2.194.0,<3",
+    "google-auth>=2.40.0,<3",
+    "google-auth-oauthlib>=1.2.0,<2",
+    "google-auth-httplib2>=0.2.0,<1",
+    "mcp>=1.24.0",
+    "google-adk>=1.24.1",
+    "httpx>=0.28.1",
+    "pyyaml>=6.0.2",
+]
+keywords = ["google tag manager", "gtm", "mcp", "tag-manager", "voxxy"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Internet",
+]
+authors = [
+    { name = "Voxxy Creative Lab", email = "hello@voxxycreativelab.com" },
+]
+
+[project.urls]
+homepage = "https://github.com/VoxxyCreativeLab/voxxy-gtm-mcp"
+repository = "https://github.com/VoxxyCreativeLab/voxxy-gtm-mcp.git"
+issues = "https://github.com/VoxxyCreativeLab/voxxy-gtm-mcp/issues"
+plugin-parent = "https://github.com/VoxxyCreativeLab/ad-platform-campaign-manager"
+
+[project.scripts]
+voxxy-gtm-mcp = "gtm_mcp.server:run_server"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "black>=24.0",
+]
+
+[build-system]
+requires = ["setuptools>=82.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["gtm_mcp*"]

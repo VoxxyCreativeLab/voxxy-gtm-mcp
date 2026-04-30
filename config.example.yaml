@@ -1,0 +1,105 @@
+# voxxy-gtm-mcp — configuration reference
+#
+# This file is documentation, not config the server reads at runtime.
+# Auth is driven by environment variables (see below); the MCP itself
+# carries no YAML config in v0.1.
+#
+# DO NOT commit a real config.yaml or any *.json key file. They're in
+# .gitignore. Keep client_secrets.json + service-account JSON out of git.
+
+# ---------------------------------------------------------------------
+# Auth path 1 — OAuth 2.0 Desktop (default)
+# ---------------------------------------------------------------------
+#
+# 1. Voxxy GCP project: enable Tag Manager API
+#    https://console.cloud.google.com/apis/library/tagmanager.googleapis.com
+#
+# 2. APIs & Services → Credentials → "+ CREATE CREDENTIALS" → OAuth client ID
+#    Application type: "Desktop app"
+#    Name: "voxxy-gtm-mcp-desktop"
+#    Download the JSON.
+#
+# 3. Place the JSON at one of:
+#      a. <project root>/client_secrets.json  (default)
+#      b. anywhere — set env: VOXXY_GTM_MCP_OAUTH_CLIENT_SECRETS=/abs/path/to/secrets.json
+#
+# 4. First server run opens a browser; you sign in with a Google account
+#    that has access to the GTM accounts you want to administer.
+#    Refresh token is cached at: ~/.config/voxxy-gtm-mcp/token.json
+#    (override with env: VOXXY_GTM_MCP_TOKEN_PATH)
+#
+# 5. Subsequent runs use the cached token silently (refresh as needed).
+
+# ---------------------------------------------------------------------
+# Auth path 2 — Service Account (opt-in, env-driven)
+# ---------------------------------------------------------------------
+#
+# Use when:
+#   - Running headless (CI, container, server)
+#   - Multi-account agency setup (one SA, many GTM accounts)
+#   - Auditable provenance is needed (SA email is the API actor)
+#
+# 1. Voxxy GCP project: enable Tag Manager API (same as OAuth path).
+#
+# 2. IAM & Admin → Service Accounts → "+ CREATE SERVICE ACCOUNT"
+#    Name: "voxxy-gtm-mcp-runner"
+#    Skip role grant at the project level (GTM access is granted at
+#    the GTM account level, not via GCP IAM).
+#    Download a JSON key for the SA.
+#
+# 3. In the GTM UI: Admin → Account → User Management → "+" → enter the
+#    SA email (e.g. voxxy-gtm-mcp-runner@<project>.iam.gserviceaccount.com).
+#    Grant container-level permissions per the surface needed:
+#      - Read for read-only tools
+#      - Edit for tag/trigger/variable CRUD
+#      - Approve / Publish for v0.1 P1 versioning tools
+#
+# 4. Set environment variables:
+#      VOXXY_GTM_MCP_SERVICE_ACCOUNT_JSON=/abs/path/to/sa-key.json
+#
+#    Optional (for Workspace domain-wide delegation):
+#      VOXXY_GTM_MCP_DELEGATED_USER=user@your-workspace-domain.com
+#
+# When VOXXY_GTM_MCP_SERVICE_ACCOUNT_JSON is set, the server uses the SA
+# path; otherwise it falls back to OAuth Desktop.
+
+# ---------------------------------------------------------------------
+# Scopes (combined for v0.1 — all 14 P0 + 6 P1 + 2 P2 tools)
+# ---------------------------------------------------------------------
+#
+#   https://www.googleapis.com/auth/tagmanager.edit.containers
+#   https://www.googleapis.com/auth/tagmanager.publish
+#   https://www.googleapis.com/auth/tagmanager.readonly
+#   https://www.googleapis.com/auth/tagmanager.manage.accounts
+#
+# Tighter per-tool scopes are not split in v0.1 — one combined scope set
+# per credential. v0.2 may introduce read-only mode.
+
+# ---------------------------------------------------------------------
+# Smoke-test environment variable
+# ---------------------------------------------------------------------
+#
+# tests/test_smoke.py is gated. To run live smoke tests against a
+# real GTM account, set:
+#
+#   VOXXY_GTM_MCP_RUN_SMOKE=1
+#   VOXXY_GTM_MCP_SMOKE_ACCOUNT_ID=6000000000     # numeric GTM account id
+#   VOXXY_GTM_MCP_SMOKE_CONTAINER_ID=10000000     # numeric container id
+#
+# Without VOXXY_GTM_MCP_RUN_SMOKE=1, the smoke tests are skipped.
+
+# ---------------------------------------------------------------------
+# Example .env (DO NOT commit)
+# ---------------------------------------------------------------------
+#
+#   # OAuth path (default)
+#   VOXXY_GTM_MCP_OAUTH_CLIENT_SECRETS=/Users/jerry/.voxxy/gtm-mcp-secrets.json
+#
+#   # OR — service account path
+#   VOXXY_GTM_MCP_SERVICE_ACCOUNT_JSON=/Users/jerry/.voxxy/gtm-mcp-sa.json
+#   VOXXY_GTM_MCP_DELEGATED_USER=jerry@voxxycreativelab.com
+#
+#   # Optional smoke-test inputs
+#   VOXXY_GTM_MCP_RUN_SMOKE=1
+#   VOXXY_GTM_MCP_SMOKE_ACCOUNT_ID=6000000000
+#   VOXXY_GTM_MCP_SMOKE_CONTAINER_ID=10000000
