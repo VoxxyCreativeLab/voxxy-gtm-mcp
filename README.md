@@ -2,7 +2,7 @@
 
 A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server for the [Google Tag Manager API v2](https://developers.google.com/tag-platform/tag-manager/api/v2). Exposes accounts, containers, workspaces, tags, triggers, and variables to MCP-enabled clients (Claude Code, Claude Desktop, etc.).
 
-**Status: v0.1.0 alpha** — 14 P0 tools shipped (accounts / containers / workspaces / tags / triggers / variables). v0.1 full target is 22 tools (P1 versioning + templates and P2 sGTM clients still TODO). Voxxy extensions (`scaffold_conversion_tag`, `diff_workspace_vs_published`, `validate_tag_assistant`) deferred to v0.2.
+**Status: v0.2.0 alpha** — 22 tools shipped (v0.1 surface complete: P0 accounts / containers / workspaces / tags / triggers / variables + P1 versions / templates + P2 sGTM clients). Voxxy extensions (`scaffold_conversion_tag`, `diff_workspace_vs_published`, `validate_tag_assistant`) deferred to v0.3+.
 
 ## Why this exists
 

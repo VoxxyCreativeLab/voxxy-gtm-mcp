@@ -10,7 +10,8 @@
 
 Mirrors the sibling voxxy-ga4-mcp coordinator pattern — same google-adk +
 mcp-python-sdk wrapping, same FunctionTool → adk_to_mcp_tool_type conversion.
-The 14 v0.1 P0 tools are imported from gtm_mcp.tools.* sub-modules.
+The 22 v0.1-surface tools are imported from gtm_mcp.tools.* sub-modules
+(14 P0 + 6 P1 + 2 P2).
 """
 
 import json
@@ -21,16 +22,24 @@ from mcp import types as mcp_types
 from mcp.server.lowlevel import Server
 
 from gtm_mcp.tools.accounts import list_accounts
+from gtm_mcp.tools.clients import create_client, list_clients
 from gtm_mcp.tools.containers import list_containers
-from gtm_mcp.tools.workspaces import list_workspaces, get_workspace_status
-from gtm_mcp.tools.tags import list_tags, get_tag, create_tag, update_tag
-from gtm_mcp.tools.triggers import list_triggers, create_trigger
-from gtm_mcp.tools.variables import (
-    list_variables,
-    create_variable,
-    list_built_in_variables,
-    enable_built_in_variables,
+from gtm_mcp.tools.tags import create_tag, get_tag, list_tags, update_tag
+from gtm_mcp.tools.templates import (
+    create_template,
+    get_template,
+    list_templates,
+    update_template,
 )
+from gtm_mcp.tools.triggers import create_trigger, list_triggers
+from gtm_mcp.tools.variables import (
+    create_variable,
+    enable_built_in_variables,
+    list_built_in_variables,
+    list_variables,
+)
+from gtm_mcp.tools.versions import create_version, publish_version
+from gtm_mcp.tools.workspaces import get_workspace_status, list_workspaces
 
 tools = [
     # P0 — accounts / containers / workspaces (4)
@@ -51,6 +60,17 @@ tools = [
     FunctionTool(create_variable),
     FunctionTool(list_built_in_variables),
     FunctionTool(enable_built_in_variables),
+    # P1 — versions (2)
+    FunctionTool(create_version),
+    FunctionTool(publish_version),
+    # P1 — templates (4)
+    FunctionTool(list_templates),
+    FunctionTool(get_template),
+    FunctionTool(create_template),
+    FunctionTool(update_template),
+    # P2 — clients (2)
+    FunctionTool(list_clients),
+    FunctionTool(create_client),
 ]
 
 tool_map = {t.name: t for t in tools}

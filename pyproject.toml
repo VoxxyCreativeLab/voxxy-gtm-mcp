@@ -8,7 +8,7 @@
 # voxxy-google-ads-mcp, voxxy-meta-ads-mcp, voxxy-bigquery-mcp, voxxy-ga4-mcp).
 name = "voxxy-gtm-mcp"
 description = "Voxxy MCP server for Google Tag Manager API v2 — greenfield Python wrapper with conversion-tag scaffolding extensions (v0.2+)"
-version = "0.1.0"
+version = "0.2.0"
 # Lower bound 3.10 for the 'mcp' SDK dependency (matches sibling voxxy-ga4-mcp).
 requires-python = ">=3.10"
 license = "Apache-2.0"

@@ -1,6 +1,6 @@
 ---
 title: voxxy-gtm-mcp — Wrapper Identity
-date: 2026-04-30
+date: 2026-05-01
 tags:
   - mcp
   - gtm
@@ -38,7 +38,7 @@ This is the first **greenfield** wrapper. ADR-031 (BACKLOG `v2.0.0-110`) languag
 
 ## Tool surface
 
-**v0.1: 14 P0 tools shipped this commit.** v0.1 target: 22 tools (14 P0 + 6 P1 + 2 P2). Voxxy extensions (`scaffold_conversion_tag`, `diff_workspace_vs_published`, `validate_tag_assistant`) deferred to v0.2.
+**v0.2: 22 tools shipped — v0.1 surface complete.** Total: 14 P0 + 6 P1 + 2 P2. Voxxy extensions (`scaffold_conversion_tag`, `diff_workspace_vs_published`, `validate_tag_assistant`) deferred to v0.3+.
 
 | Tool | Module | Status | Purpose |
 |---|---|---|---|
@@ -56,10 +56,14 @@ This is the first **greenfield** wrapper. ADR-031 (BACKLOG `v2.0.0-110`) languag
 | `create_variable` | `variables.py` | v0.1 P0 | Create a user-defined variable |
 | `list_built_in_variables` | `variables.py` | v0.1 P0 | List enabled built-in variables |
 | `enable_built_in_variables` | `variables.py` | v0.1 P0 | Enable built-in variables (e.g. `clickClasses`, `pageUrl`) |
-| `create_version` | (deferred) | v0.1 P1 | Create a container version |
-| `publish_version` | (deferred) | v0.1 P1 | Publish a container version |
-| `list_templates` / `get_template` / `create_template` / `update_template` | (deferred) | v0.1 P1 | Sandboxed JS template push/pull |
-| `list_clients` / `create_client` | (deferred) | v0.1 P2 | sGTM clients |
+| `create_version` | `versions.py` | v0.1 P1 | Snapshot a workspace into a new container version |
+| `publish_version` | `versions.py` | v0.1 P1 | Publish a container version to live (fingerprint-aware) |
+| `list_templates` | `templates.py` | v0.1 P1 | List sandboxed-JS custom templates |
+| `get_template` | `templates.py` | v0.1 P1 | Get a custom template (returns fingerprint + templateData) |
+| `create_template` | `templates.py` | v0.1 P1 | Create a custom template (sandboxed JS) |
+| `update_template` | `templates.py` | v0.1 P1 | Update a custom template (fingerprint-aware) |
+| `list_clients` | `clients.py` | v0.1 P2 | List sGTM clients (server-side containers) |
+| `create_client` | `clients.py` | v0.1 P2 | Create an sGTM client |
 
 ## Auth
 
@@ -107,7 +111,7 @@ Smoke-test scope (3 tests):
 - `gtm_mcp/coordinator.py` — Tool registry
 - `gtm_mcp/server.py` — Stdio MCP entry-point
 - `gtm_mcp/tools/utils.py` — Service builder, User-Agent, resource-name helpers
-- `gtm_mcp/tools/{accounts,containers,workspaces,tags,triggers,variables}.py` — 14 v0.1 P0 tools
+- `gtm_mcp/tools/{accounts,containers,workspaces,tags,triggers,variables,versions,templates,clients}.py` — 22 v0.1 surface tools (14 P0 + 6 P1 + 2 P2)
 - `config.example.yaml` — OAuth + SA setup paths
 - `start-mcp.cmd` — Windows launcher
 - `tests/test_smoke.py` — pytest scaffold (smoke tests run only when `VOXXY_GTM_MCP_RUN_SMOKE=1`)

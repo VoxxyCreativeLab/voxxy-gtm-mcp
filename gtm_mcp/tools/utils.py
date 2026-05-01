@@ -111,6 +111,40 @@ def tag_path(
     )
 
 
+def version_path(
+    account_id: str | int,
+    container_id: str | int,
+    version_id: str | int,
+) -> str:
+    return (
+        container_path(account_id, container_id) + f"/versions/{version_id}"
+    )
+
+
+def template_path(
+    account_id: str | int,
+    container_id: str | int,
+    workspace_id: str | int,
+    template_id: str | int,
+) -> str:
+    return (
+        workspace_path(account_id, container_id, workspace_id)
+        + f"/templates/{template_id}"
+    )
+
+
+def client_path(
+    account_id: str | int,
+    container_id: str | int,
+    workspace_id: str | int,
+    client_id: str | int,
+) -> str:
+    return (
+        workspace_path(account_id, container_id, workspace_id)
+        + f"/clients/{client_id}"
+    )
+
+
 # ---------- Response shaping ----------
 
 
